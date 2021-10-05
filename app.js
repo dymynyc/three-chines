@@ -82,9 +82,9 @@ var mirror = new THREE.Plane(new THREE.Vector3(1,0,0), 0)
 var mirror2 = new THREE.Plane(new THREE.Vector3(0,1,0), 0)
 
 var src_points = [
-	new THREE.Vector3( -5, 0, 0, 0 ),
-	new THREE.Vector3( -3,  0.6,0 ),
-	new THREE.Vector3( 0,  1, 0 )
+	new THREE.Vector3( -5, 0, 0.4),
+	new THREE.Vector3( -3,  0.4, 0.17 ),
+	new THREE.Vector3( 0,  0.6, 0 )
 ]
 
 
@@ -98,6 +98,7 @@ scene.add(sp1)
 
 var sp2 = SP2 = createSpline(_src_points, 0x00ff00)
 sp2.position.z = -1
+sp2.geometry.scale(0.95,0.6,1)
 scene.add(sp2)
 
 var sp3 = SP3 = createSpline(_src_points2, 0x00ff00)
@@ -105,6 +106,7 @@ scene.add(sp3)
 
 var sp4 = SP4 = createSpline(_src_points2, 0x00ff00)
 sp4.position.z = -1
+sp4.geometry.scale(0.95,0.6,1)
 scene.add(sp4)
 
 function readAttribute(attribute) {
@@ -153,8 +155,10 @@ function curvesToGeometry(geo, a, b) {
       points_b[i+1].clone().add(b.position)
     )
     geo.faces.push(
-      new THREE.Face3(j+0, j+1, j+2),
-      new THREE.Face3(j+3, j+2, j+1)
+      new THREE.Face3(j+2, j+1, j+0),
+      new THREE.Face3(j+1, j+2, j+3)
+  //    new THREE.Face3(j+0, j+1, j+2),
+    //  new THREE.Face3(j+3, j+2, j+1)
     )
   }
   return geo
@@ -164,12 +168,16 @@ function curvesToGeometry(geo, a, b) {
 var geometry = new THREE.Geometry()
 curvesToGeometry(geometry, sp1, sp2)
 curvesToGeometry(geometry, sp3, sp4)
-curvesToGeometry(geometry, sp1, sp3)
+curvesToGeometry(geometry, sp2, sp4)
 
+geometry.computeFaceNormals();
+geometry.computeVertexNormals();
 
 console.log("GEOM", GEO=geometry)
-var m=    new THREE.MeshBasicMaterial( { color: "#ff0000" } )
-m.wireframe = true
+//var m=    new THREE.MeshBasicMaterial( { color: "#ff0000" } )
+var m=    new THREE.MeshLambertMaterial( { color: "#ff0000" } )
+//var m=    new THREE.MeshPhongMaterial( { color: "#ff0000" } )
+//m.wireframe = true
 scene.add(
   new THREE.Mesh(
     geometry.toBufferGeometry(),
