@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "three": "^0.133.0"
+    "three": "^0.133.0",
+    "three-unfold": "^1.0.0"
   }
 }
